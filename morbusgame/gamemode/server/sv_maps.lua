@@ -128,7 +128,7 @@ function SMV.CreateMapList()
 		end	
 	end
 		
-	if playerCount > 13 then
+	if playerCount > 15 then
 		table.insert(SMV.ExcludedMaps, "mor_isolation_b4_re")
 		table.insert(SMV.ExcludedMaps, "mor_temple_v1")
 		excludeString = "tiny"
