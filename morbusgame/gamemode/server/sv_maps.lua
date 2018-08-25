@@ -109,7 +109,7 @@ function SMV.CreateMapList()
 			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
 			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")				
 			excludeString = "large"
-			SMV.OptionCount = 3
+			SMV.OptionCount = 4
 						
 			if playerCount < 8 then
 				--table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
@@ -118,6 +118,7 @@ function SMV.CreateMapList()
 				
 				-- test changes, hard time populating on these maps
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
+				SMV.OptionCount = 3
 				
 				if playerCount < 6 then
 					SMV.OptionCount = 2
