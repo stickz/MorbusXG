@@ -88,6 +88,57 @@ function SMV.CreateMapList()
 	--build list of maps to exclude based on size and get exclude string 
 	SMV.ExcludedMaps, excludeString = SMV.CreateExcludeList()
 	
+	--read prevous maps and convert to table format
+	local lastMaps = util.JSONToTable( file.Read( "lastmaps.txt") )
+	
+	--insert the current map into the table
+	local currentMap = game.GetMap()
+	table.insert(lastMaps, 1, currentMap)
+	
+	
+	--Get how many options will appear in the voter
+	local optionCount = 0
+	for k,v in pairs(SMV.Maps) do
+		if !table.KeyFromValue(SMV.ExcludedMaps, v) then
+			if file.Exists("maps/"..v..".bsp","GAME") then
+				optionCount = optionCount + 1
+			end		
+		end	
+	end	
+	
+	--how many maps are in the excluded maps table?
+	local tableCount = table.Count(lastMaps)
+	
+	if GetConVar("morbus_exclude_last_played"):GetBool() then
+		--Reduce the option count to a set amount by excluding previous maps
+		if optionCount > SMV.OptionCount then
+			for j=1, tableCount do					
+				if !table.KeyFromValue(SMV.ExcludedMaps, lastMaps[j]) then
+					table.insert(SMV.ExcludedMaps, lastMaps[j])
+					optionCount = optionCount - 1
+				end
+			
+				if optionCount == SMV.OptionCount then break end
+			end
+		end
+	end
+	
+	--Trim the map list of non-required repeats before writing to text
+	local uniqueMaps = {}
+	local lastMap = nil
+	for k=1, tableCount do
+		lastMap = lastMaps[k]
+		
+		if !table.KeyFromValue(uniqueMaps, lastMap) then
+			table.insert(uniqueMaps, lastMap)
+		end
+	end
+	
+	if GetValidCount() > 1 then
+		--convert the new map table to json and write to the text file
+		file.Write( "lastmaps.txt", util.TableToJSON( uniqueMaps, true  ) )
+	end
+	
 	--clear table from previous round (safety feature)
 	table.Empty(SMV.MapVoteList)
 	
@@ -125,7 +176,9 @@ function SMV.CreateExcludeList()
 			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
 			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
 			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")
-			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+			if GetConVar("morbus_exclude_last_played"):GetBool() then
+				table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+			end
 			excludeString = "large"
 						
 			if playerCount < 8 then
@@ -136,7 +189,9 @@ function SMV.CreateExcludeList()
 				-- test changes, hard time populating on these maps
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
 				
-				
+				if playerCount < 6 then
+					table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+				end
 			end		
 		end	
 	end
