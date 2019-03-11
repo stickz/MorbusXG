@@ -78,6 +78,7 @@ util.AddNetworkString("smv_winner")
 
 SMV.VoteTime = 30
 SMV.Voting = false
+SMV.OptionCount = 4
 SMV.Votes = {}
 SMV.TVotes = {}
 
