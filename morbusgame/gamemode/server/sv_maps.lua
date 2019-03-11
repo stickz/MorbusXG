@@ -77,7 +77,6 @@ util.AddNetworkString("smv_winner")
 
 
 SMV.VoteTime = 30
-SMV.OptionCount = 4
 SMV.Voting = false
 SMV.Votes = {}
 SMV.TVotes = {}
@@ -85,7 +84,9 @@ SMV.TVotes = {}
 SMV.MapVoteList = {}
 
 function SMV.CreateMapList()
-	SMV.ExcludedMaps = {}
+	
+	--build list of maps to exclude based on size and get exclude string 
+	SMV.ExcludedMaps, excludeString = SMV.CreateExcludeList()
 	
 	--read prevous maps and convert to table format
 	local lastMaps = util.JSONToTable( file.Read( "lastmaps.txt") )
@@ -94,68 +95,6 @@ function SMV.CreateMapList()
 	local currentMap = game.GetMap()
 	table.insert(lastMaps, 1, currentMap)
 	
-	--exclude maps based on player count	
-	local playerCount = GetValidCount()	
-	
-	local excludeString = ""
-	
-	if playerCount < 18 then
-		table.insert(SMV.ExcludedMaps, "mor_horizon_v11_re")
-		
-		if playerCount < 12 then	
-			table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")
-			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
-			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
-			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")				
-			excludeString = "large"
-			SMV.OptionCount = 4
-						
-			if playerCount < 8 then
-				--table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
-				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
-				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
-				table.insert(SMV.ExcludedMaps, "mor_turbatio")
-				
-				-- test changes, hard time populating on these maps
-				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
-				SMV.OptionCount = 3
-				
-				if playerCount < 6 then
-					SMV.OptionCount = 2
-					table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
-				end
-			end		
-		end	
-	end
-		
-	if playerCount > 15 then
-		table.insert(SMV.ExcludedMaps, "mor_isolation_b4_re")
-		table.insert(SMV.ExcludedMaps, "mor_temple_v1")
-		excludeString = "tiny"
-				
-		if playerCount > 18 then
-			table.insert(SMV.ExcludedMaps, "mor_alphastation_b4_re")
-			table.insert(SMV.ExcludedMaps, "mor_grem")
-			table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
-			excludeString = "tiny and small sized"
-			SMV.OptionCount = 3
-			
-			if playerCount > 23 then
-				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
-				table.insert(SMV.ExcludedMaps, "mor_chemical_labs_b3_re")
-				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
-				table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
-				excludeString = "tiny, small and medium sized"
-				
-				if playerCount > 25 then
-					table.insert(SMV.ExcludedMaps, "mor_turbatio")
-					table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
-					excludeString = "all non-large"
-					SMV.OptionCount = 2
-				end
-			end
-		end
-	end
 	
 	--Get how many options will appear in the voter
 	local optionCount = 0
@@ -170,15 +109,17 @@ function SMV.CreateMapList()
 	--how many maps are in the excluded maps table?
 	local tableCount = table.Count(lastMaps)
 	
-	--Reduce the option count to a set amount by excluding previous maps
-	if optionCount > SMV.OptionCount then
-		for j=1, tableCount do					
-			if !table.KeyFromValue(SMV.ExcludedMaps, lastMaps[j]) then
-				table.insert(SMV.ExcludedMaps, lastMaps[j])
-				optionCount = optionCount - 1
-			end
+	if GetConVar("morbus_exclude_last_played"):GetBool() then
+		--Reduce the option count to a set amount by excluding previous maps
+		if optionCount > SMV.OptionCount then
+			for j=1, tableCount do					
+				if !table.KeyFromValue(SMV.ExcludedMaps, lastMaps[j]) then
+					table.insert(SMV.ExcludedMaps, lastMaps[j])
+					optionCount = optionCount - 1
+				end
 			
-			if optionCount == SMV.OptionCount then break end
+				if optionCount == SMV.OptionCount then break end
+			end
 		end
 	end
 	
@@ -219,6 +160,67 @@ function SMV.CreateMapList()
 	SMV.SendAll("[xG] There are "..table.Count(SMV.Maps).." total maps in rotations!")
 	SMV.SendAll("[xG] Player count thresholds have excluded "..excludeString.." maps!")	
 end
+
+
+--exclude maps based on player count	
+function SMV.CreateExcludeList()
+	SMV.ExcludedMaps = {}
+	local playerCount = GetValidCount()	
+	local excludeString = ""
+	
+	if playerCount < 20 then
+		table.insert(SMV.ExcludedMaps, "mor_horizon_v11_re")
+		
+		if playerCount < 12 then	
+			table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")
+			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
+			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
+			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")
+			if GetConVar("morbus_exclude_last_played"):GetBool() then
+				table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+			end
+			excludeString = "large"
+						
+			if playerCount < 8 then
+				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
+				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
+				table.insert(SMV.ExcludedMaps, "mor_turbatio")
+				
+				-- test changes, hard time populating on these maps
+				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
+				
+				if playerCount < 6 then
+					table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+				end
+			end		
+		end	
+	end
+			
+	if playerCount > 18 then
+		table.insert(SMV.ExcludedMaps, "mor_isolation_b4_re")
+		table.insert(SMV.ExcludedMaps, "mor_temple_v1")
+		table.insert(SMV.ExcludedMaps, "mor_alphastation_b4_re")
+		table.insert(SMV.ExcludedMaps, "mor_grem")
+		table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
+		excludeString = "tiny and small sized"
+			
+		if playerCount > 23 then
+			table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
+			table.insert(SMV.ExcludedMaps, "mor_chemical_labs_b3_re")
+			table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
+			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+			excludeString = "tiny, small and medium sized"
+				
+			if playerCount > 25 then
+				table.insert(SMV.ExcludedMaps, "mor_turbatio")
+				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
+				excludeString = "all non-large"
+			end
+		end
+	end
+	return SMV.ExcludedMaps, excludeString
+end
+
 
 function SMV.SendAll( msg )
 	for k, v in pairs( player.GetAll() ) do
