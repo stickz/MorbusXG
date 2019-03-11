@@ -67,6 +67,7 @@ CreateConVar("morbus_mission_time_max", "180", FCVAR_NOTIFY)
 CreateConVar("morbus_mission_time_min", "120", FCVAR_NOTIFY)
 CreateConVar("morbus_mission_next_time_max", "80", FCVAR_NOTIFY)
 CreateConVar("morbus_mission_next_time_min", "160", FCVAR_NOTIFY)
+CreateConVar("morbus_exclude_last_played", "0", FCVAR_NOTIFY)
 
 
 CreateConVar("morbus_rpnames_optional", "0", FCVAR_NOTIFY)
