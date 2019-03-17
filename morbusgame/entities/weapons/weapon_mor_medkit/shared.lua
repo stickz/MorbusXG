@@ -50,6 +50,7 @@ end
 
 function SWEP:Deploy()
    self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+   return true
 end
 
 function SWEP:PrimaryAttack()
