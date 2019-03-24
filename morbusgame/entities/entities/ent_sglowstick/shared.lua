@@ -32,24 +32,27 @@ if CLIENT then
 			p = owner:GetRagdollEntity() or owner
 		end
 		
-        local hand = p:LookupBone("ValveBiped.Bip01_R_Hand")  
-        if hand then  
-            local position, angles = p:GetBonePosition(hand)
-      
-            local x = angles:Up() * (-0.00 )
-            local y = angles:Right() * 2.50  
-            local z = angles:Forward() * 4.15
-  
-            local pitch = 0.00
-            local yaw = 0.00
-            local roll = 0.00
+        if p and IsValid(p) then
+			local hand = p:LookupBone("ValveBiped.Bip01_R_Hand")
+			
+			if hand then  
+				local position, angles = p:GetBonePosition(hand)
+		  
+				local x = angles:Up() * (-0.00 )
+				local y = angles:Right() * 2.50  
+				local z = angles:Forward() * 4.15
+	  
+				local pitch = 0.00
+				local yaw = 0.00
+				local roll = 0.00
 
-            angles:RotateAroundAxis(angles:Forward(), pitch)  
-            angles:RotateAroundAxis(angles:Right(), yaw)  
-            angles:RotateAroundAxis(angles:Up(), roll)  
-      
-            self:SetPos(position + x + y + z)  
-            self:SetAngles(angles)  
-        end
+				angles:RotateAroundAxis(angles:Forward(), pitch)  
+				angles:RotateAroundAxis(angles:Right(), yaw)  
+				angles:RotateAroundAxis(angles:Up(), roll)  
+		  
+				self:SetPos(position + x + y + z)  
+				self:SetAngles(angles)  
+			end
+		end
     end
 end  
