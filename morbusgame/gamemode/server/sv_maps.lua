@@ -78,7 +78,7 @@ util.AddNetworkString("smv_winner")
 
 SMV.VoteTime = 30
 SMV.Voting = false
-SMV.OptionCount = 4
+SMV.OptionCount = 8
 SMV.Votes = {}
 SMV.TVotes = {}
 
@@ -177,10 +177,9 @@ function SMV.CreateExcludeList()
 			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
 			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
 			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")
-			if GetConVar("morbus_exclude_last_played"):GetBool() then
-				table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
-			end
+			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
 			excludeString = "large"
+			SMV.OptionCount = 10
 						
 			if playerCount < 8 then
 				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
@@ -189,10 +188,7 @@ function SMV.CreateExcludeList()
 				
 				-- test changes, hard time populating on these maps
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
-				
-				if playerCount < 6 then
-					table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
-				end
+				SMV.OptionCount = 8
 			end		
 		end	
 	end
@@ -204,6 +200,7 @@ function SMV.CreateExcludeList()
 		table.insert(SMV.ExcludedMaps, "mor_grem")
 		table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
 		excludeString = "tiny and small sized"
+		SMV.OptionCount = 8
 			
 		if playerCount > 23 then
 			table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
@@ -211,6 +208,7 @@ function SMV.CreateExcludeList()
 			table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
 			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
 			excludeString = "tiny, small and medium sized"
+			SMV.OptionCount = 6
 				
 			if playerCount > 25 then
 				table.insert(SMV.ExcludedMaps, "mor_turbatio")
