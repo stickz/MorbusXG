@@ -169,28 +169,26 @@ function SMV.CreateExcludeList()
 	local playerCount = GetValidCount()	
 	local excludeString = ""
 	
-	if playerCount < 20 then
+	if playerCount < 18 then
 		table.insert(SMV.ExcludedMaps, "mor_horizon_v11_re")
-		
+		table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")		
+			
 		if playerCount < 12 then	
-			table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")
 			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
 			table.insert(SMV.ExcludedMaps, "mor_auriga_v4_re")
 			table.insert(SMV.ExcludedMaps, "mor_ptmc_v22")
 			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
+			table.insert(SMV.ExcludedMaps, "mor_turbatio")
 			excludeString = "large"
-			SMV.OptionCount = 10
-						
+			SMV.OptionCount = 10			
+					
 			if playerCount < 8 then
 				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
 				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
-				table.insert(SMV.ExcludedMaps, "mor_turbatio")
-				
-				-- test changes, hard time populating on these maps
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
 				SMV.OptionCount = 8
-			end		
-		end	
+			end
+		end
 	end
 			
 	if playerCount > 18 then
