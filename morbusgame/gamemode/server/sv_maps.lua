@@ -171,7 +171,8 @@ function SMV.CreateExcludeList()
 	
 	if playerCount < 18 then
 		table.insert(SMV.ExcludedMaps, "mor_horizon_v11_re")
-		table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")		
+		table.insert(SMV.ExcludedMaps, "mor_installation_gt1_re")
+		SMV.OptionCount = 8
 			
 		if playerCount < 12 then	
 			table.insert(SMV.ExcludedMaps, "mor_outpostnorth32_a5")
@@ -180,13 +181,13 @@ function SMV.CreateExcludeList()
 			table.insert(SMV.ExcludedMaps, "mor_breach_cv21")
 			table.insert(SMV.ExcludedMaps, "mor_turbatio")
 			excludeString = "large"
-			SMV.OptionCount = 10			
+			SMV.OptionCount = 8			
 					
 			if playerCount < 8 then
 				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
 				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
-				SMV.OptionCount = 8
+				SMV.OptionCount = 6
 			end
 		end
 	end
