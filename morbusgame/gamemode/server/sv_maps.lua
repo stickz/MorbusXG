@@ -21,7 +21,8 @@ SMV.Maps = {
 	"mor_skandalon_b5_re",
 	"mor_isolation_cv1",
 	"mor_isolation_b4_re",
-	"mor_horizon_v11_re"
+	"mor_horizon_v11_re",
+	"mor_halcyo"
 }
 
 /*========================================
@@ -195,6 +196,7 @@ function SMV.CreateExcludeList()
 	if playerCount > 18 then
 		table.insert(SMV.ExcludedMaps, "mor_isolation_b4_re")
 		table.insert(SMV.ExcludedMaps, "mor_temple_v1")
+		table.insert(SMV.ExcludedMaps, "mor_halcyo")
 		table.insert(SMV.ExcludedMaps, "mor_alphastation_b4_re")
 		table.insert(SMV.ExcludedMaps, "mor_grem")
 		table.insert(SMV.ExcludedMaps, "mor_skandalon_b5_re")
