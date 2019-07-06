@@ -22,7 +22,7 @@ SMV.Maps = {
 	"mor_isolation_cv1",
 	"mor_isolation_b4_re",
 	"mor_horizon_v11_re",
-	"mor_halcyo"
+	"mor_halcyon"
 }
 
 /*========================================
@@ -97,7 +97,6 @@ function SMV.CreateMapList()
 	local currentMap = game.GetMap()
 	table.insert(lastMaps, 1, currentMap)
 	
-	
 	--Get how many options will appear in the voter
 	local optionCount = 0
 	for k,v in pairs(SMV.Maps) do
@@ -169,6 +168,10 @@ function SMV.CreateExcludeList()
 	SMV.ExcludedMaps = {}
 	local playerCount = GetValidCount()	
 	local excludeString = ""
+	
+	-- Exclude the current map from being re-picked
+	local currentMap = game.GetMap()
+	table.insert(SMV.ExcludedMaps, currentMap)
 	
 	if playerCount < 18 then
 		table.insert(SMV.ExcludedMaps, "mor_horizon_v11_re")
