@@ -191,7 +191,7 @@ function SMV.CreateExcludeList()
 				table.insert(SMV.ExcludedMaps, "mor_isolation_cv1")
 				table.insert(SMV.ExcludedMaps, "mor_facility_cv2")
 				table.insert(SMV.ExcludedMaps, "mor_spaceship_v10_re")
-				SMV.OptionCount = 6
+				SMV.OptionCount = 5
 			end
 		end
 	end
